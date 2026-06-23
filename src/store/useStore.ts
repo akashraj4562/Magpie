@@ -10,19 +10,25 @@ function noise(id: string): number { let h = 0; for (const c of id) h = (h * 31 
 
 type State = {
   world: World;
+  onboarded: boolean;
   openDecisionId: string | null;
   openDecision: (id: string) => void;
   closeDrawer: () => void;
   addDecision: (d: Decision) => void;
   resolveDecision: (id: string, action: ResolveAction) => void;
   advanceOrder: (orderId: string, to: OrderState) => void;
+  completeOnboarding: () => void;
+  resetOnboarding: () => void;
 };
 
 export const useStore = create<State>((set) => ({
   world: generateWorld(),
+  onboarded: typeof window !== 'undefined' && window.localStorage.getItem('magpie_onboarded') === '1',
   openDecisionId: null,
   openDecision: (id) => set({ openDecisionId: id }),
   closeDrawer: () => set({ openDecisionId: null }),
+  completeOnboarding: () => { try { window.localStorage.setItem('magpie_onboarded', '1'); } catch { /* noop */ } set({ onboarded: true }); },
+  resetOnboarding: () => { try { window.localStorage.removeItem('magpie_onboarded'); } catch { /* noop */ } set({ onboarded: false }); },
 
   addDecision: (d) => set((s) => ({ world: { ...s.world, decisions: [d, ...s.world.decisions] } })),
 

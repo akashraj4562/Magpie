@@ -5,6 +5,8 @@ import { BRAND } from '../config';
 import { Rail } from './Rail';
 import { EvidenceDrawer } from './EvidenceDrawer';
 import { AskPanel } from './AskPanel';
+import { Onboarding } from './Onboarding';
+import { useStore } from '../store/useStore';
 
 const NAV = [
   { to: '/', label: 'Today', icon: LayoutGrid, end: true },
@@ -22,6 +24,7 @@ const NAV = [
 
 export function AppShell() {
   const [askOpen, setAskOpen] = useState(false);
+  const onboarded = useStore((s) => s.onboarded);
   return (
     <div className="flex h-screen overflow-hidden bg-bg text-text">
       <nav className="flex w-56 shrink-0 flex-col overflow-y-auto border-r border-line bg-surface">
@@ -56,6 +59,7 @@ export function AppShell() {
 
       <Rail />
       <EvidenceDrawer />
+      {!onboarded && <Onboarding />}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, Plug } from 'lucide-react';
 import { BRAND } from '../config';
+import { useStore } from '../store/useStore';
 import { PageHeader, Tag } from '../components/primitives';
 
 const INTEGRATIONS = [
@@ -10,6 +11,7 @@ const INTEGRATIONS = [
 
 export function Settings() {
   const [w, setW] = useState({ cost: 40, sla: 35, rto: 25 });
+  const reset = useStore((s) => s.resetOnboarding);
   return (
     <div>
       <PageHeader title="Settings" sub="Brand-agnostic config — swap these and the whole app is your store. Plus the SCALE routing rules and integrations." right={<Tag tone="accent">Config</Tag>} />
@@ -21,6 +23,7 @@ export function Settings() {
               <div key={k} className="flex items-center justify-between border-b border-line py-1.5 text-xs last:border-0"><span className="text-mute">{k}</span><span className="font-mono text-dim">{v}</span></div>
             ))}
             <div className="mt-2 text-[11px] text-mute">Everything brand-specific lives in <code className="text-dim">src/config.ts</code> — nothing is hardcoded.</div>
+            <button onClick={reset} className="mt-2 text-[11px] text-accent hover:underline">Restart onboarding</button>
           </div>
           <div className="rounded-[10px] border border-line bg-surface p-4">
             <div className="mb-2 text-sm font-medium text-text">SCALE routing preference</div>
