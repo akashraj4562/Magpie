@@ -19,10 +19,16 @@ npm install
 npm run dev      # http://127.0.0.1:5190
 ```
 
-## Status — Phase 0 (the foundation)
+## Status — runnable product (front-end, seeded)
 
-This repo is the **de-branded, brand-agnostic foundation**. The landing presents the product thesis and
-the phased plan; the real product builds from here per `docs/`.
+The full Magpie product surface is **built and runnable** on `127.0.0.1:5190`: **Today**, **Decisions**,
+**Orders** (with the COD-RTO reroute hero), **Shipping · SCALE**, **Catalog**, **Channels**, **Storefront**,
+**Money** (a true landed P&L), **Ledger** (predicted-vs-actual — the proof), **Customers**, **Settings** —
+over the reusable engines (landed-margin, the SCALE courier intelligence, the governed decision loop +
+review-first drawer, the ledger), all on **deterministic seeded data** so every flow is demonstrable.
+
+The **real backend** (Medusa + Postgres + auth + Razorpay/Shiprocket + DPDP) is the Phase-1 engineering
+per `docs/PRODUCTIZATION-TASKS.md` — what this product surface will run on.
 
 ## Docs (the thinking, carried over from review)
 
