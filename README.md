@@ -27,8 +27,26 @@ The full Magpie product surface is **built and runnable** on `127.0.0.1:5190`: *
 over the reusable engines (landed-margin, the SCALE courier intelligence, the governed decision loop +
 review-first drawer, the ledger), all on **deterministic seeded data** so every flow is demonstrable.
 
-The **real backend** (Medusa + Postgres + auth + Razorpay/Shiprocket + DPDP) is the Phase-1 engineering
-per `docs/PRODUCTIZATION-TASKS.md` — what this product surface will run on.
+## Backend — Phase-1 (the seam is built and runnable)
+
+The real backend has begun, **in the order the review demanded** (seam + ADRs first, then code):
+
+- **`packages/core`** — `@magpie/core`, the decision-core extracted framework-free (no React, no DB).
+  Prove the **Medusa↔Magpie adapter seam** end-to-end with **zero infra**:
+
+  ```bash
+  cd packages/core && npm run demo
+  # a fake Medusa order.placed → adaptOrder → SCALE + gates → a governed REVIEW-tier Decision
+  ```
+
+- **`server`** — a **Medusa v2** scaffold with the Magpie decision module; the `order.placed`
+  subscriber *is the seam, live* (loads the order → `@magpie/core` → persists a `Decision`,
+  queryable at `GET /admin/magpie/decisions`). Booting it needs Postgres + Redis.
+- **`docs/adr/`** — ADR-001 (the seam) · ADR-002 (schema-per-tenant) · ADR-003 (the cross-tenant SCALE
+  pool / the moat). **`docs/PHASE-1.md`** is the map.
+
+Razorpay/Shiprocket adapters, tenant middleware, reconciliation, and pointing the Vite app at the API
+are the next increments (`docs/PRODUCTIZATION-TASKS.md`).
 
 ## Docs (the thinking, carried over from review)
 

@@ -1,0 +1,15 @@
+{
+  "name": "@magpie/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend-agnostic decision-core for Magpie: landed-margin, the SCALE courier intelligence, the governed decision loop, the ledger, and the Medusa adapter seam. No framework deps.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "demo": "tsc && node dist/demo.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
