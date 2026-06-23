@@ -75,17 +75,21 @@ export function recommendCourier(o: Order, firstTime = false): Reco {
     .map((c) => { const cost = expectedLandedCost(o, c); return { courier: c, score: courierScore(c, o.zoneClass, o.paymentMode), freight: cost.freight, expected: cost.expected }; })
     .sort((a, b) => a.expected - b.expected || a.courier.id.localeCompare(b.courier.id));
   const recommended = ranked[0];
-  const cheapest = [...ranked].sort((a, b) => a.freight - b.freight || a.courier.id.localeCompare(b.courier.id))[0];
-  const codBlocked = blocked.some((b) => b.reason === 'cod');
+  // Naive cheapest = cheapest freight over ALL serviceable couriers (what a brand WITHOUT SCALE picks),
+  // including the RTO-risky ones. The saving is the expected RTO/SLA cost SCALE avoids by not using it.
+  const serviceable = COURIERS.filter((c) => c.zones.includes(o.zoneClass) && (!need || c.capabilities.includes(need)));
+  const cheapest = serviceable
+    .map((c): Scored => { const cost = expectedLandedCost(o, c); return { courier: c, score: courierScore(c, o.zoneClass, o.paymentMode), freight: cost.freight, expected: cost.expected }; })
+    .sort((a, b) => a.freight - b.freight || a.courier.id.localeCompare(b.courier.id))[0];
+  const naiveBlocked = cheapest ? blocked.some((b) => b.id === cheapest.courier.id) : false;
   let verdict: Verdict = 'safe';
-  if (recommended && cheapest && recommended.courier.id !== cheapest.courier.id) verdict = 'cheapNotSafe';
-  if (codBlocked) verdict = 'codBlocked';
-  else if (!recommended && blocked.some((b) => b.reason === 'sensitivity')) verdict = 'sensitivityBlocked';
+  if (recommended && cheapest && recommended.courier.id !== cheapest.courier.id) verdict = naiveBlocked ? 'codBlocked' : 'cheapNotSafe';
+  else if (!recommended) verdict = blocked.some((b) => b.reason === 'sensitivity') ? 'sensitivityBlocked' : 'codBlocked';
   const savingPaise = recommended && cheapest ? Math.max(0, cheapest.expected - recommended.expected) : 0;
   let rationale = recommended ? `Route via ${recommended.courier.name} (score ${recommended.score.toFixed(2)})` : 'No eligible courier — escalate.';
   if (recommended && cheapest && recommended.courier.id !== cheapest.courier.id) {
     const r = perfFor(recommended.courier, o.zoneClass, o.paymentMode); const ch = perfFor(cheapest.courier, o.zoneClass, o.paymentMode);
-    rationale += ` not ${cheapest.courier.name} (${cheapest.score.toFixed(2)}) — its RTO on this lane is ${Math.round(ch.rtoRate * 100)}% vs ${Math.round(r.rtoRate * 100)}%; the cheapest freight loses when it risks a broken promise.`;
+    rationale += ` not ${cheapest.courier.name} (${cheapest.score.toFixed(2)}) — ${cheapest.courier.name}'s RTO on this lane is ${Math.round(ch.rtoRate * 100)}% vs ${Math.round(r.rtoRate * 100)}%, saving the expected RTO cost. The cheapest freight loses when it risks a broken promise.`;
   }
   return { ranked, recommended, cheapest, blocked, verdict, rationale, savingPaise, confidence: routingConfidence(ranked) };
 }

@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppShell } from './components/AppShell';
 import { Today } from './surfaces/Today';
+import { Orders } from './surfaces/Orders';
+import { Shipping } from './surfaces/Shipping';
 import { Soon } from './surfaces/Soon';
 
 export function App() {
@@ -10,8 +12,8 @@ export function App() {
         <Route element={<AppShell />}>
           <Route index element={<Today />} />
           <Route path="/decisions" element={<Soon title="Decisions" sub="The ranked decision queue + the review-first evidence drawer." />} />
-          <Route path="/orders" element={<Soon title="Orders" sub="Own-store + marketplace orders, the guarded lifecycle, SCALE courier per order." />} />
-          <Route path="/shipping" element={<Soon title="Shipping · SCALE" sub="The courier brain: scorecards, the COD-RTO gate, SLA-risk, NDR." />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/shipping" element={<Shipping />} />
           <Route path="/catalog" element={<Soon title="Catalog" sub="Products, variants, inventory truth across channels." />} />
           <Route path="/channels" element={<Soon title="Channels" sub="Own store + Amazon + Flipkart." />} />
           <Route path="/storefront" element={<Soon title="Storefront" sub="The website / store builder." />} />
