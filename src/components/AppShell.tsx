@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutGrid, ListChecks, Package, Truck, Boxes, Network, Store, Wallet, ScrollText, Users, Settings } from 'lucide-react';
+import { LayoutGrid, ListChecks, Package, Truck, Boxes, Network, Store, Wallet, ScrollText, Users, Settings, Sparkles } from 'lucide-react';
 import { BRAND } from '../config';
 import { Rail } from './Rail';
 import { EvidenceDrawer } from './EvidenceDrawer';
+import { AskPanel } from './AskPanel';
 
 const NAV = [
   { to: '/', label: 'Today', icon: LayoutGrid, end: true },
@@ -19,6 +21,7 @@ const NAV = [
 ];
 
 export function AppShell() {
+  const [askOpen, setAskOpen] = useState(false);
   return (
     <div className="flex h-screen overflow-hidden bg-bg text-text">
       <nav className="flex w-56 shrink-0 flex-col overflow-y-auto border-r border-line bg-surface">
@@ -42,8 +45,12 @@ export function AppShell() {
             <span className="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[11px] text-mute">{BRAND.tagline}</span>
             <span className="rounded border border-accent bg-accent-bg px-1.5 py-0.5 text-[11px] text-accent">{BRAND.domain}</span>
           </div>
-          <span className="text-[11px] text-mute">brand-agnostic · config-driven · demo data</span>
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] text-mute">brand-agnostic · demo data</span>
+            <button onClick={() => setAskOpen((v) => !v)} className="flex items-center gap-1.5 rounded-full border border-accent bg-accent-bg px-3 py-1.5 text-xs font-medium text-accent hover:opacity-90"><Sparkles size={13} /> Ask Magpie</button>
+          </div>
         </header>
+        {askOpen && <AskPanel onClose={() => setAskOpen(false)} />}
         <main className="flex-1 overflow-y-auto px-6 py-5"><Outlet /></main>
       </div>
 
