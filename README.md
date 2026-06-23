@@ -50,6 +50,8 @@ are the next increments (`docs/PRODUCTIZATION-TASKS.md`).
 
 ## Docs (the thinking, carried over from review)
 
+- `docs/BACKLOG.md` — **prioritized pending items (P0–P3)** — what's next, with effort + dependencies
+- `docs/PHASE-1.md` — the backend map (the seam, what's runnable now, what needs infra)
 - `docs/PRODUCTIZATION.md` — the strategy + reuse map
 - `docs/PRODUCTIZATION-TASKS.md` — the build backlog (v2, post Product-Staff review)
 - `docs/reviews/REVIEW-PRODUCTIZATION.md` — the Product-Staff review (6/6 CONDITIONAL) + `productization-sections/`
