@@ -1,0 +1,23 @@
+{
+  "name": "magpie",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The AI operations brain for growth-stage D2C brands — open-source, brand-agnostic.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview --port 5190"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7"
+  }
+}
